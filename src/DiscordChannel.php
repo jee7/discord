@@ -37,9 +37,14 @@ class DiscordChannel
 
         $message = $notification->toDiscord($notifiable);
 
-        return $this->discord->send($channel, [
-            'content' => $message->body,
-            'embed' => $message->embed,
-        ]);
+        $data = [
+            'content' => $message->body
+        ];
+
+        if (count($message->embed) > 0) {
+            $data['embeds'] = [$message->embed];
+        }
+
+        return $this->discord->send($channel, $data);
     }
 }
